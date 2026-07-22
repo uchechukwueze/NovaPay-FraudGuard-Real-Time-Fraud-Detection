@@ -4,7 +4,7 @@
        alt="Fraudulent Transaction Detection"
        width="100%">
 </p>
-# Anomaly Detection for fraud (unusual-activity)
+# NovaPay FraudGuard: Real-Time Fraud Detection
 The purpose of this project is to develop a machine learning-based fraud detection system for NovaPay, replacing its existing static, rules-based approach
 
 ### Business Context
