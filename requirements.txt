@@ -7,3 +7,6 @@ scikit-learn==1.8.0
 imbalanced-learn
 requests
 streamlit
+plotly
+seaborn
+matplotlib
