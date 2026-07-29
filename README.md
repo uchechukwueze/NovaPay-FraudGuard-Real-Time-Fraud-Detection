@@ -2,10 +2,10 @@
   <img src="image.png" alt="NovaPay FraudGuard banner" width="100%">
 </p>
 
-<h1 align="center">NovaPay FraudGuard</h1>
+<h1>NovaPay FraudGuard</h1>
 
 <p align="center">
-  <strong>AI-powered real-time fraud detection for digital payments</strong>
+  <strong>NovaPay FraudGuard is an intelligent, AI–powered fraud detection system designed to identify suspicious transactions in real time</strong>
 </p>
 
 <p align="center">
