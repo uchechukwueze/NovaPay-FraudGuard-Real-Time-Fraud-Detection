@@ -439,6 +439,10 @@ Important fraud drivers included:
 
 Outputs included SHAP bar, beeswarm, and waterfall plots.
 
+  <img src="assets/16_shap_bar_1.png" alt="SHAP Bar Chart" width="95%">
+   <img src="assets/17_shap_bar_2.png" alt="SHAP beeswarm Chart" width="95%">
+   <img src="assets/18_shap_bar_3.png" alt="one transaction that was actually fraud..." width="95%">
+
 ---
 
 ## Application and Deployment
