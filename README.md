@@ -4,8 +4,8 @@
 
 <h1 align="center">NovaPay FraudGuard</h1>
 
-<p align="center">
-  <strong>AI-powered real-time fraud detection for digital payments</strong>
+<p>
+  <strong>NovaPay FraudGuard is an intelligent, AI–powered fraud detection system designed to identify suspicious transactions in real time</strong>
 </p>
 
 <p align="center">
