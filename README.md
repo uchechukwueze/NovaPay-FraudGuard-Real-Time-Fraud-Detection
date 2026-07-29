@@ -1,246 +1,776 @@
+<p align="center">
+  <img src="image.png" alt="NovaPay FraudGuard banner" width="100%">
+</p>
+
+<h1 align="center">NovaPay FraudGuard</h1>
 
 <p align="center">
-  <img src="image.png"
-       alt="Fraudulent Transaction Detection"
-       width="100%">
+  <strong>AI-powered real-time fraud detection for digital payments</strong>
 </p>
-# NovaPay FraudGuard: Real-Time Fraud Detection
-The purpose of this project is to develop a machine learning-based fraud detection system for NovaPay, replacing its existing static, rules-based approach
 
-### Business Context
-NovaPay, a rapidly growing digital money transfer company, faces significant challenges in maintaining the security of its transactions amidst the increasing sophistication of fraud. As the company expands globally, it is essential to protect its customers and maintain operational efficiency. Fraudulent activities such as identity theft, unauthorized payments, and account takeovers threaten the company’s financial integrity and customer trust. Given the company's reliance on real-time transactions, the need for a more robust, scalable, and adaptable fraud detection system is critical.
+<p align="center">
+  Detect suspicious transactions in milliseconds, reduce false positives, explain model decisions, and deliver fraud intelligence through a production-style machine learning system.
+</p>
 
-### Purpose of Project
-The purpose of this project is to develop a machine learning-based fraud detection system for NovaPay, replacing its existing static, rules-based approach. The solution will aim to enhance the accuracy of detecting fraudulent transactions while minimizing the rate of false positives (legitimate transactions wrongly flagged as fraudulent). This will ensure that customers have a smoother experience and trust in the service while also reducing the operational and financial impact of fraud. The machine learning model will be capable of evolving as fraud tactics change, providing long-term adaptability and scalability.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Model-LightGBM-1F9D55" alt="LightGBM">
+  <img src="https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Deployment-Docker-2496ED?logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/Dashboard-Streamlit-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/Explainability-SHAP-6A5ACD" alt="SHAP">
+</p>
 
-### Expected Outcome
-The expected outcomes of this project are:
+---
 
-Increased Accuracy in Fraud Detection: A significant improvement in identifying fraudulent transactions compared to the previous rules-based system, with at least a 15% increase in recall (ability to catch fraudulent transactions).
+## Table of Contents
 
-Reduced False Positives: A decrease in the number of legitimate transactions wrongly flagged as fraud, improving the customer experience.
+- [Project Overview](#project-overview)
+- [Business Problem](#business-problem)
+- [Why This Project Matters](#why-this-project-matters)
+- [Project Objectives](#project-objectives)
+- [Solution Architecture](#solution-architecture)
+- [Dataset](#dataset)
+- [Exploratory Data Analysis](#exploratory-data-analysis)
+- [Key Fraud Insights](#key-fraud-insights)
+- [Machine Learning Approach](#machine-learning-approach)
+- [Model Performance](#model-performance)
+- [Explainability](#explainability)
+- [Application and Deployment](#application-and-deployment)
+- [Dashboard Features](#dashboard-features)
+- [Project Structure](#project-structure)
+- [Installation and Local Setup](#installation-and-local-setup)
+- [API Usage](#api-usage)
+- [Cloud Deployment](#cloud-deployment)
+- [Limitations](#limitations)
+- [Future Improvements](#future-improvements)
+- [Skills Demonstrated](#skills-demonstrated)
+- [Author](#author)
 
-Scalable and Adaptable System: A machine learning system that can scale with NovaPay’s growth and quickly adapt to new fraud tactics.
+---
 
-Regulatory Compliance: An explainable model that provides transparent reasons for fraud predictions, ensuring that regulatory requirements are met.
+## Project Overview
 
-Operational Efficiency: A model deployed as a microservice, integrated seamlessly into NovaPay’s transaction system, enabling real-time fraud detection without the need for manual reviews.
+**NovaPay FraudGuard** is an end-to-end machine learning system designed to detect fraudulent digital-payment transactions in real time.
 
-### Business Overview
-NovaPay is a digital-first cross-border money transfer company based in Toronto, Canada. Operating in the United Kingdom, Canada, and United States, NovaPay empowers users to seamlessly send, receive, and hold multiple currencies across international borders.
+The project replaces a traditional static, rules-based fraud process with an adaptive model that learns from transaction behaviour, payment channels, device signals, customer history, geographic information, account characteristics, and transaction velocity.
 
-### Key highlights:
+The solution goes beyond training a classifier. It demonstrates the full journey from raw transaction data to a usable fraud-prevention product:
 
-Processes millions of monthly transactions across international borders
+> Data preparation → exploratory analysis → feature engineering → time-based validation → model tuning → explainability → FastAPI → Docker → Streamlit dashboard
 
-Prioritizes three key pillars: affordability, lightning-fast speed, and exceptional digital experiences
+NovaPay FraudGuard is built to support two important decisions:
 
-Serves diverse customer segments from expatriates supporting families abroad to businesses managing international payroll and freelancers receiving global payments
+1. **Should this transaction be allowed to proceed?**
+2. **What signals caused the transaction to be considered risky?**
 
-Mission-driven to make international money movement accessible and transparent
+---
 
-The company's strong customer satisfaction strategy depends heavily on secure transaction processing — making accurate early detection of fraudulent transactions a strategic priority.
+## Business Problem
 
+Digital payment fraud changes rapidly. Fraudsters adapt their behaviour, devices, locations, payment channels, and transaction patterns to avoid detection.
 
-### Busines Challenge
-Digital payment platforms face a number of operational, financial, and regulatory challenges when handling fraud detection:
+Static rules can identify known patterns, but they often struggle when fraud tactics change, transaction volumes increase, fraud patterns differ across channels and countries, genuine customers behave unusually, or too many legitimate transactions are incorrectly blocked.
 
-### Operational Challenges
-Real-time processing requirements limit manual review capacity
+This creates two costly outcomes:
 
-Current static rules combined with manual review processes struggle to scale effectively and adapt to rapidly evolving fraudster tactics
+### Missed fraud
 
-Identity theft, account takeover, transaction laundering, and unauthorized payments pose constant threats
+Fraudulent transactions that are approved can lead to:
 
-### Financial Challenges
-Mounting costs from refunds, chargebacks, and compliance penalties erode profitability
+- Direct financial losses
+- Chargebacks and refunds
+- Higher investigation costs
+- Regulatory exposure
+- Loss of customer trust
 
-False positives frustrate legitimate users and can drive customer attrition
+### False positives
 
-Missed fraud damages revenue and increases operational costs
+Legitimate transactions incorrectly flagged as fraud can lead to:
 
-### Regulatory Challenges
-Financial regulations require transparent and auditable fraud detection systems
+- Payment delays
+- Customer frustration
+- Abandoned transactions
+- Higher support costs
+- Reduced customer retention
+
+NovaPay therefore needs a fraud-detection system that is **accurate, explainable, scalable, and fast enough for real-time payment decisions**.
 
-Anti-money laundering (AML) and Know Your Customer (KYC) compliance frameworks demand explainable decision-making
+---
 
-Failure to maintain adequate fraud controls results in penalties or increased regulatory scrutiny
+## Why This Project Matters
 
-### Key Pain Points
-Identity theft, account takeover, transaction laundering, and unauthorized payments
+Fraud detection is not simply a classification task. It is a business trade-off between security and customer experience.
 
-Highly imbalanced dataset (fraud represents less than 1% of all transactions)
+A useful model must:
 
-Insufficient adaptive detection tools in current workflow
+- Catch as much fraud as possible
+- Avoid unnecessarily blocking legitimate users
+- Prioritise high-risk cases for investigation
+- Explain why a transaction was flagged
+- Remain reliable as fraud patterns change
+- Deliver predictions through a production-ready interface
+
+NovaPay FraudGuard addresses these requirements through a tuned LightGBM model, time-aware validation, SHAP explainability, a FastAPI prediction service, Docker packaging, and a Streamlit monitoring dashboard.
+
+---
+
+## Project Objectives
+
+- Clean, validate, and prepare transaction data for reliable analysis and modelling
+- Explore transaction behaviour and identify patterns associated with fraud
+- Engineer meaningful behavioural, temporal, geographic, and risk features
+- Handle the class imbalance between legitimate and fraudulent transactions
+- Compare multiple classification algorithms
+- Select and tune the strongest model using fraud-relevant metrics
+- Validate the final model using a chronological train-test split
+- Reduce false positives while maintaining strong fraud recall
+- Explain global and transaction-level model decisions using SHAP
+- Expose the trained model through a FastAPI prediction endpoint
+- Package the backend service with Docker
+- Build an interactive Streamlit dashboard for monitoring and live scoring
+
+---
 
-False positives that frustrate legitimate users
+## Solution Architecture
+
+```mermaid
+flowchart LR
+    A[Transaction Data] --> B[Data Cleaning and Validation]
+    B --> C[Feature Engineering]
+    C --> D[Exploratory Data Analysis]
+    D --> E[Time-Based Train-Test Split]
+    E --> F[Model Training and Tuning]
+    F --> G[LightGBM Fraud Model]
+    G --> H[SHAP Explainability]
+    G --> I[FastAPI Prediction Service]
+    I --> J[Docker Container]
+    J --> K[Streamlit Dashboard]
+    K --> L[Fraud Decision and Recommended Action]
+```
 
-Regulatory pressure for transparency and explainable fraud decisions
+### Production request flow
 
-These issues collectively justify the need for a machine learning–driven solution.
+```text
+User enters transaction details
+            ↓
+Streamlit sends a POST request
+            ↓
+FastAPI validates and transforms the request
+            ↓
+Saved LightGBM pipeline generates a probability
+            ↓
+API returns fraud prediction and risk score
+            ↓
+Dashboard displays the decision and recommended action
+```
 
+---
 
-### Project Rationale
-The project is relevant because the digital payments industry is undergoing a transformation toward automated and intelligence-driven fraud prevention.
+## Dataset
 
-### Why this project is important:
+The cleaned dataset contains:
 
-Ensures platform integrity
-Accurate fraud detection helps prevent financial losses and maintains trust with customers and regulators.
+- **11,140 transactions**
+- **10,147 legitimate transactions**
+- **993 fraudulent transactions**
+- **8.91% overall fraud rate**
 
-Improves operational performance
-Fraud teams can prioritize high-risk transactions more effectively while reducing manual review burden.
+### Main feature groups
 
-Increases customer satisfaction
-Reduced false positives mean fewer legitimate transactions are incorrectly blocked, improving user experience.
+| Feature group | Example variables |
+|---|---|
+| Transaction information | Transaction amount, source amount, fee, exchange rate |
+| Currency information | Source currency, destination currency, currency corridor |
+| Customer profile | Account age, KYC tier, chargeback history |
+| Device intelligence | New device indicator, device trust score |
+| Geographic risk | Home country, IP country, location mismatch |
+| Network and risk signals | IP risk score, corridor risk, internal risk score |
+| Behavioural velocity | Transactions in the previous hour and 24 hours |
+| Time features | Year, month, hour, day of week, weekend and night indicators |
+| Target | `is_fraud` |
 
-Supports competitive advantage
-ML-driven fraud detection is becoming standard among modern fintech leaders and digital payment platforms.
+```text
+0 = Legitimate transaction
+1 = Fraudulent transaction
+```
 
-Enhances regulatory compliance
-Transparent, explainable fraud decisions meet compliance standards and build institutional trust.
+Because the target is imbalanced, accuracy alone is not sufficient. Precision, recall, F1 score, the confusion matrix, and PR-AUC are more meaningful.
 
-This makes real-time fraud detection a strategic asset for modern digital payment providers.
+---
 
-### Project Objective
-The project focuses on achieving the following:
+## Exploratory Data Analysis
 
-Build supervised classifiers capable of accurately distinguishing fraudulent transactions from legitimate ones across diverse transaction patterns.
+### 1. Transaction class distribution
 
-Handle severe class imbalance (fraud <1% of transactions) through sophisticated re-sampling techniques and class-weighted ensemble methods.
+<p align="center">
+  <img src="assets/01_transaction_distribution.png" alt="Transaction distribution" width="90%">
+</p>
 
-Integrate SHAP explainability to provide transaction-level transparency for analysts and regulatory stakeholders.
+Fraud represents **8.9%** of the transactions. This imbalance means a model could achieve high accuracy by predicting most transactions as legitimate while still missing important fraud cases.
 
-Achieve at least 15% improvement in recall compared to rules-based baseline while maintaining acceptable precision levels to minimize false positives.
+### 2. Annual fraud-rate trend
 
-Deploy as a FastAPI microservice capable of real-time scoring for immediate transaction evaluation in production environments.
+<p align="center">
+  <img src="assets/02_annual_fraud_rate_trend.png" alt="Annual fraud rate trend" width="85%">
+</p>
 
-### Data Description
-The dataset covers multiple categories of information. Click here to download dataset
+The annual fraud rate increased substantially in 2024 and 2025 compared with 2022 and 2023. This supports the decision to use chronological validation.
 
-1. Transaction Data
-Captures core transaction details:
+### 3. Financial exposure
 
-Transaction IDs
+<p align="center">
+  <img src="assets/04_average_transaction_value.png" alt="Average transaction value by fraud status" width="80%">
+</p>
 
-Amounts
+Fraudulent transactions have a much higher average value than legitimate transactions, meaning a smaller number of fraud events may create disproportionate financial losses.
 
-Currency pairs
+<p align="center">
+  <img src="assets/03_fee_by_transaction_status.png" alt="Fees by transaction status" width="75%">
+</p>
 
-Timestamps
+### 4. Fraud by transaction amount band
 
-Channel indicators (mobile/web/ATM)
+<p align="center">
+  <img src="assets/05_fraud_by_amount_band.png" alt="Fraud by amount band" width="90%">
+</p>
 
-Device fingerprints
+Fraud appears across multiple amount bands, but larger transaction bands contain a much higher concentration of fraud relative to their legitimate volume.
 
-IP addresses
+### 5. Fraud rate by channel
 
-Geographic country codes
+<p align="center">
+  <img src="assets/06_fraud_rate_by_channel.png" alt="Fraud rate by channel" width="80%">
+</p>
 
-2. Customer Data
-Includes customer profile information:
+The **web channel** recorded the highest fraud rate, followed by ATM and mobile transactions.
 
-Account age
+### 6. Location mismatch
 
-KYC verification tier
+<p align="center">
+  <img src="assets/07_location_mismatch_fraud_rate.png" alt="Location mismatch fraud rate" width="80%">
+</p>
 
-Typical transaction amounts
+Transactions with a location mismatch show a dramatically higher fraud rate than transactions without a mismatch.
 
-Historical behavior patterns
+### 7. Geographic concentration
 
-Internal risk scores
+<p align="center">
+  <img src="assets/08_fraud_distribution_by_country.png" alt="Fraud distribution by country" width="75%">
+</p>
 
-3. Fraud Labels
-Binary labels (0/1) derived from:
+Fraud cases are not distributed evenly across the home-country groups shown.
 
-Completed fraud investigations
+### 8. High-risk currency corridors
 
-Confirmed chargebacks
+<p align="center">
+  <img src="assets/09_vulnerable_currency_corridors.png" alt="Vulnerable currency corridors" width="95%">
+</p>
 
-Verified customer disputes
+The most vulnerable routes in the analysed data include **CAD → INR**, **GBP → NGN**, and **USD → MXN**. Corridor rates should be interpreted together with transaction counts.
 
-Provides ground truth for model training.
+### 9. Device trust
 
-Data Model Structure
-Transaction → Customer data (many-to-one)
+<p align="center">
+  <img src="assets/10_fraud_rate_by_device_trust.png" alt="Fraud rate by device trust" width="80%">
+</p>
 
-Transaction → Fraud labels (one-to-one)
+Transactions from very low-trust devices recorded dramatically higher fraud rates.
 
+### 10. KYC tier
 
-### Project Work Flow
-Step 1: Data Collection & Profiling
-Analyze distributions, identify missingness patterns, and establish baseline fraud prevalence across the dataset.
+<p align="center">
+  <img src="assets/11_fraud_rate_by_kyc_tier.png" alt="Fraud rate by KYC tier" width="80%">
+</p>
 
-Step 2: Data Preparation
-Clean and standardize data; engineer features including velocity metrics, mismatch indicators, device fingerprints, and temporal patterns.
+Low-KYC customers showed the highest fraud rate, while enhanced verification was associated with lower exposure.
 
-Step 3: Exploratory Data Analysis
-Uncover patterns by channel, geography, and time; identify anomalies distinguishing fraudulent from legitimate behavior.
+### 11. Account age
 
-Step 4: Model Development
-Progress from Logistic Regression and Random Forest baselines to advanced XGBoost and LightGBM models; tune hyperparameters and compare performance using recall, precision, F1-score, and ROC-AUC metrics.
+<p align="center">
+  <img src="assets/12_fraud_rate_by_account_age.png" alt="Fraud rate by account age" width="80%">
+</p>
 
-Step 5: Validation & Explainability
-Conduct rigorous holdout evaluation; generate SHAP values to provide transaction-level reasoning and build trust in model decisions.
+Newer accounts, particularly those between **0 and 90 days old**, showed much greater fraud exposure.
 
-Step 6: Deployment
-Build FastAPI /score service endpoint; containerize with Docker for seamless portability across environments.
+### 12. Transaction velocity
 
-Step 7: Monitoring & Improvement
-Implement Evidently-based drift detection; establish quarterly retraining playbook to maintain model accuracy as fraud patterns evolve.
+<p align="center">
+  <img src="assets/13_fraud_rate_by_transaction_velocity.png" alt="Fraud rate by transaction velocity" width="80%">
+</p>
 
-### Learning Opportunities & Skilled Developed
+Repeated activity within a short period was strongly associated with fraud.
 
-Technical Skills
-Real-world fraud detection modeling with severely imbalanced datasets
+### 13. Fraud by day and hour
 
-Building robust supervised classifiers with ensemble methods
+<p align="center">
+  <img src="assets/14_fraud_heatmap_day_hour.png" alt="Fraud heatmap by day and hour" width="100%">
+</p>
 
-Handling class imbalance through SMOTE and re-sampling techniques
+Fraud risk varied by day of week and transaction hour, with several early-morning periods showing elevated risk.
 
-Using SHAP for model interpretability and regulatory compliance
+### 14. Monthly fraud-rate spike
 
-API-based model deployment with FastAPI and Docker
+<p align="center">
+  <img src="assets/15_monthly_fraud_rate.png" alt="Monthly fraud rate over time" width="95%">
+</p>
 
-Implementing drift detection and model monitoring frameworks
+The monthly trend shows a sharp spike near the end of 2025, confirming the importance of monitoring, drift detection, and periodic retraining.
 
-Financial Services & Fintech Concepts
+---
 
-Understanding digital payment transaction flows
+## Key Fraud Insights
 
-Cross-border money transfer operations
+1. **Fraud increased over time.** The fraud rate rose sharply in 2024 and 2025.
+2. **Fraudulent transactions are financially larger.**
+3. **Web transactions carry the highest channel risk.**
+4. **Location mismatch is a major warning signal.**
+5. **Low device trust is strongly associated with fraud.**
+6. **New accounts are more vulnerable.**
+7. **Low KYC verification is high risk.**
+8. **High transaction velocity is suspicious.**
+9. **Risk varies by currency corridor.**
+10. **Fraud has strong temporal patterns.**
 
-Fraud detection lifecycle from transaction to investigation
+---
 
-Regulatory frameworks (AML, KYC compliance)
+## Machine Learning Approach
 
-Balance between security and customer experience
+### Data preparation
 
-Professional Skills
+- Correcting inconsistent categorical labels
+- Handling missing values
+- Converting timestamps to datetime
+- Removing non-useful identifiers
+- Validating numerical data types
+- Creating cleaned feature aliases
+- Encoding categorical variables
+- Preserving the feature order used during training
 
-Translating business problems into ML solutions
+### Feature engineering
 
-Working with cross-functional teams (fraud operations, compliance, engineering)
+- Transaction year, month, hour, and day of week
+- Weekend and night-transaction indicators
+- Transaction amount bands
+- Account-age bands
+- Device-trust bands
+- Currency corridors
+- Location mismatch
+- New-device indicator
+- One-hour and 24-hour transaction velocity
+- IP risk score
+- Corridor risk
+- Internal risk score
+- Chargeback history
 
-Communicating results to non-technical stakeholders
+### Time-based validation
 
-Building production-ready ML systems with monitoring
+```text
+Training period:
+3 October 2022 → 23 March 2025
 
-### Job Related
-This project aligns strongly with several industry positions:
+Testing period:
+23 March 2025 → 16 December 2025
+```
 
-Data Scientist / Machine Learning Engineer
+This mirrors deployment more realistically: train on historical transactions and evaluate on future transactions.
 
-Fraud Analytics Specialist
+### Models evaluated
 
-Risk Analyst (Fintech & Payment Services)
+- Gradient Boosting
+- AdaBoost
+- XGBoost
+- LightGBM
+- CatBoost
 
-Compliance Analyst / AML Specialist
+A tuned **LightGBM** model was selected as the final model.
 
-Payment Operations Analyst
+### Class imbalance
 
-Business Intelligence or Reporting Analyst
+The pipeline used imbalance-aware methods, including SMOTE on the training data only, to help the model learn the minority fraud class without contaminating the test set.
 
-Product Analyst (Fintech)
+---
 
-Completing this project showcases the practical and technical skills required in these roles.
+## Model Performance
+
+| Metric | Score |
+|---|---:|
+| PR-AUC | **0.9617** |
+| Fraud precision | **0.996** |
+| Fraud recall | **0.916** |
+| Fraud F1 score | **0.954** |
+| Approximate overall accuracy | **98.8%** |
+
+### Confusion matrix
+
+|  | Predicted Legitimate | Predicted Fraud |
+|---|---:|---:|
+| **Actual Legitimate** | 1,918 | 1 |
+| **Actual Fraud** | 26 | 283 |
+
+### Business interpretation
+
+- **283 fraudulent transactions were correctly identified**
+- **26 fraudulent transactions were missed**
+- **Only 1 legitimate transaction was incorrectly flagged**
+- The model caught approximately **92% of fraud cases**
+- The very low false-positive count suggests limited disruption to legitimate customers in this test set
+
+PR-AUC was prioritised because it focuses on performance for the positive fraud class and is more informative than accuracy in an imbalanced problem.
+
+---
+
+## Explainability
+
+SHAP was used to understand global model behaviour and individual transaction predictions.
+
+Important fraud drivers included:
+
+- `txn_velocity_1h`
+- `txn_velocity_24h`
+- `risk_score_internal`
+- `channel_web`
+- `ip_risk_score`
+- Device trust
+- Location mismatch
+- Account age
+- KYC tier
+- Corridor risk
+
+Outputs included SHAP bar, beeswarm, and waterfall plots.
+
+---
+
+## Application and Deployment
+
+### FastAPI backend
+
+Main endpoints:
+
+```text
+GET  /
+GET  /health
+POST /predict
+GET  /docs
+```
+
+### Docker
+
+Docker packages the Python runtime, FastAPI application, model files, feature-name file, libraries, and Uvicorn server.
+
+### Streamlit
+
+The Streamlit application provides:
+
+- Executive fraud monitoring
+- Live transaction scoring
+- Fraud intelligence charts
+- Model-performance reporting
+- Dataset-field detection
+- API connection monitoring
+- Risk decisions and recommended actions
+
+---
+
+## Dashboard Features
+
+### Executive Overview
+
+- Total transactions
+- Fraudulent transactions
+- Fraud rate
+- Total transaction value
+- Amount lost to fraud
+- Monthly fraud-rate trend
+- Transaction distribution
+- Fraud rate by channel
+- Transaction value by fraud status
+- Recent transaction activity
+
+### Live Fraud Scoring
+
+Inputs include transaction amount, payment channel, velocity, IP risk, device trust, new-device status, and location mismatch.
+
+Outputs include:
+
+- Fraud or legitimate prediction
+- Fraud probability
+- Risk classification
+- Recommended action
+
+### Fraud Intelligence
+
+Fraud patterns across channels, home countries, and time.
+
+### Model Performance
+
+PR-AUC, precision, recall, F1 score, performance chart, and confusion matrix.
+
+---
+
+## Project Structure
+
+```text
+NovaPay-FraudGuard/
+├── api/
+│   ├── __init__.py
+│   └── main.py
+├── dashboard/
+│   └── app.py
+├── data/
+│   └── data_cleaned.csv
+├── model/
+│   ├── novapay_lightgb_pipeline.pkl
+│   └── novapay_feature_names.pkl
+├── notebook/
+│   └── notebook.ipynb
+├── assets/
+│   └── EDA images
+├── Dockerfile
+├── requirements.txt
+├── image.png
+└── README.md
+```
+
+---
+
+## Installation and Local Setup
+
+### Clone the repository
+
+```bash
+git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+cd YOUR-REPOSITORY
+```
+
+### Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+### Install dependencies
+
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### Run FastAPI
+
+```bash
+uvicorn api.main:app --reload
+```
+
+Open:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### Run Streamlit
+
+```bash
+python -m streamlit run dashboard/app.py
+```
+
+Open:
+
+```text
+http://localhost:8501
+```
+
+---
+
+## Run with Docker
+
+```bash
+docker build -t novapay-fraud-api .
+docker run -p 8000:8000 novapay-fraud-api
+```
+
+Health check:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+Expected response:
+
+```json
+{
+  "status": "API is running",
+  "model_loaded": true
+}
+```
+
+---
+
+## API Usage
+
+### Endpoint
+
+```text
+POST /predict
+```
+
+### Example request
+
+```json
+{
+  "amount_usd": 500,
+  "txn_velocity_1h": 3,
+  "txn_velocity_24h": 10,
+  "ip_risk_score": 0.7,
+  "device_trust_score": 0.3,
+  "new_device": 1,
+  "location_mismatch": 1,
+  "channel": "web"
+}
+```
+
+### Example response
+
+```json
+{
+  "prediction": "Fraud",
+  "fraud_probability": 0.9342
+}
+```
+
+---
+
+## Cloud Deployment
+
+```text
+Streamlit Community Cloud
+            ↓
+Public FastAPI backend
+            ↓
+Docker container
+            ↓
+Saved LightGBM model
+```
+
+The dashboard can read the backend URL from an environment variable:
+
+```python
+API_URL = os.getenv(
+    "API_URL",
+    "http://127.0.0.1:8000"
+)
+```
+
+---
+
+## Limitations
+
+- The dataset represents a project scenario and may not capture every real-world fraud pattern
+- Some category-level rates may be influenced by small transaction counts
+- Confirmed fraud labels may arrive with delays
+- Fraud behaviour changes over time
+- The live scoring form collects a subset of all possible raw features
+- Strong test results do not remove the need for human review and monitoring
+- A real deployment would require stronger privacy, security, encryption, and access controls
+
+---
+
+## Future Improvements
+
+- Automated data- and concept-drift monitoring
+- Analyst feedback and case-management workflow
+- Cost-sensitive threshold optimisation
+- Expected-loss scoring
+- Customer behavioural sequences
+- Graph features linking accounts, devices, IPs, and beneficiaries
+- API authentication and rate limiting
+- Managed cloud deployment
+- Automated tests and CI/CD
+- Scheduled model retraining
+- Benchmarking against a documented rules-based baseline
+
+---
+
+## Responsible AI Considerations
+
+- Do not treat nationality, country, or payment corridor as proof of fraud
+- Use geographic features only with behavioural and transaction evidence
+- Monitor false positives across customer groups
+- Provide human review for high-impact decisions
+- Record model versions and explanations
+- Protect customer data
+- Reassess performance when fraud patterns change
+
+The objective is not simply to block more transactions. It is to improve security while protecting legitimate customers from unnecessary friction.
+
+---
+
+## Skills Demonstrated
+
+### Data science and machine learning
+
+- Data cleaning and validation
+- Exploratory analysis
+- Feature engineering
+- Imbalanced classification
+- Time-based validation
+- Ensemble model comparison
+- Hyperparameter tuning
+- Precision, recall, F1, PR-AUC, and confusion-matrix analysis
+- SHAP explainability
+
+### Software and deployment
+
+- FastAPI
+- Uvicorn
+- Docker
+- Streamlit
+- REST API integration
+- Joblib model serialisation
+- Cloud-ready configuration
+
+### Fraud and fintech analytics
+
+- Payment fraud analysis
+- Transaction velocity
+- Device risk
+- Geographic mismatch
+- KYC risk
+- Cross-border corridors
+- Fraud-operations trade-offs
+
+---
+
+## Author
+
+**Uchechukwu Eze**  
+Data Scientist | Machine Learning | Economics | AI for Financial Services
+
+- GitHub: [uchechukwueze](https://github.com/uchechukwueze)
+- LinkedIn: www.linkedin.com/in/uchechukwueze
+
+
+---
+
+## Acknowledgements
+
+This project demonstrates how machine learning, explainability, APIs, containerisation, and interactive dashboards can be combined to address real world fraud risk in digital payments.
+
+---
+
+<p align="center">
+  <strong>NovaPay FraudGuard</strong><br>
+  Intelligent fraud prevention for safer digital payments.
+</p>
