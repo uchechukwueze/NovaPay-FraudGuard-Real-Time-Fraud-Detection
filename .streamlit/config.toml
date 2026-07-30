@@ -1,0 +1,39 @@
+[theme]
+base = "dark"
+primaryColor = "#2CE0AE"
+backgroundColor = "#030914"
+secondaryBackgroundColor = "#071426"
+textColor = "#F8FAFC"
+showSidebarBorder = true
+
+[theme.sidebar]
+primaryColor = "#2CE0AE"
+backgroundColor = "#071426"
+secondaryBackgroundColor = "#0A1A2F"
+textColor = "#F8FAFC"
+
+# Keep the NovaPay dark appearance even when
+# a viewer's browser is configured for light mode.
+[theme.light]
+primaryColor = "#2CE0AE"
+backgroundColor = "#030914"
+secondaryBackgroundColor = "#071426"
+textColor = "#F8FAFC"
+
+[theme.light.sidebar]
+primaryColor = "#2CE0AE"
+backgroundColor = "#071426"
+secondaryBackgroundColor = "#0A1A2F"
+textColor = "#F8FAFC"
+
+[theme.dark]
+primaryColor = "#2CE0AE"
+backgroundColor = "#030914"
+secondaryBackgroundColor = "#071426"
+textColor = "#F8FAFC"
+
+[theme.dark.sidebar]
+primaryColor = "#2CE0AE"
+backgroundColor = "#071426"
+secondaryBackgroundColor = "#0A1A2F"
+textColor = "#F8FAFC"
